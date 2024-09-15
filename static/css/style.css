@@ -1,0 +1,47 @@
+body {
+    background-color: #eeeeee;
+}
+.card {
+    margin-top: 20px;
+}
+.alert {
+    margin-top: 15px;
+}
+.footer {
+    text-align: center;
+    margin-top: 50px;
+}
+.textarea-consulta {
+    margin-top: 20px;
+}
+.button-consulta {
+    margin-top: 10px;
+}
+.ConsultaPrompt{
+    color: #777;
+    padding: 10px;
+}
+.card{
+    border: 0;
+    box-shadow: #cfcfcf 0 0 2px 2px;
+    border-radius: 10px;
+}
+.card-header{
+    background-color: #cccccc;
+}
+.card-body{
+    color: #fff;
+}
+.footer{
+    color: #fff;
+}
+input[type=text]{
+    width: 100%;
+}
+.sensores{
+    margin-top: 30px;
+    background: #ffbb00;
+    box-shadow: #cfcfcf 0 0 2px 2px;
+    padding: 10px;
+    border-radius: 7px;
+}

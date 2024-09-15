@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Mantenimiento Predictivo Inteligente</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="bg-dark text-white text-center py-3">
+        <h1>Sistema de Mantenimiento Predictivo Inteligente</h1>
+        <p>Monitoreo y predicción en tiempo real para maximizar la productividad</p>
+    </header>
+
+
+    <!-- Main content -->
+    <div class="container">
+
+        <div class="sensores">
+            <div class="row">
+                <div class="col-sm-12 col-md-2 col-lg-1">
+                    <img src="" alt="">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <p>Sensor de Nivel de Agua (Siemens QPM21)</p>
+                    <input type="text" id="SensorNivelAgua" placeholder="Nivel de agua (en metros)">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-1">
+                    <img src="" alt="">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <p>Sensor de Presión de Agua (Honeywell ASDX Series)</p>
+                    <input type="text" id="SensorPresion" placeholder="Unidad de Medida: Presión (en pascales 'Pa')">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-1">
+                    <img src="" alt="">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <p>Sensor de Flujo de Agua (GROVE - Water Flow Sensor)</p>
+                    <input type="text" id="SensorFlujo" placeholder="Flujo volumétrico (en litros por minuto)">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-1">
+                    <img src="" alt="">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <p>Sensor de Temperatura de Agua (DS18B20)</p>
+                    <input type="text" id="SensorTemperatura" placeholder="Temperatura en grados Celsius (°C)">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-1">
+                    <img src="" alt="">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <p>Sensor de Calidad del Agua (pH) (Sen0161)</p>
+                    <input type="text" id="SensorPH" placeholder="pH (escala de acidez o alcalinidad)">
+                </div>
+                <div class="col-sm-12 col-md-2 col-lg-1">
+                    <img src="" alt="">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-3">
+                    <p>Sensor de Conductividad del Agua (DFRobot Gravity Analog Conductivity Sensor)</p>
+                    <input type="text" id="SensorNivAgua"
+                        placeholder="Conductividad (en microsiemens por centímetro (µS/cm))">
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+
+            <!-- Dashboard section -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Estado Actual de la Maquinaria
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Bomba en monitoreo: <strong>15</strong></p>
+                        <p class="card-text">Fallos previstos: <strong>2</strong></p>
+                        <canvas id="realtime-chart" width="100%" height="50"></canvas> <!-- Gráfico en tiempo real -->
+                        <button id="consultarEstado" class="btn btn-success mt-4">Consultar Estado Actual</button>
+                        <!-- Botón de consulta -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts and notifications -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        Alertas de Mantenimiento
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-warning" role="alert">
+                            Máquina #12: Alta probabilidad de fallo en 3 días.
+                        </div>
+                        <div class="alert alert-danger" role="alert">
+                            Máquina #8: Se recomienda detener para revisión inmediata.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sección de consulta de problemas -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card textarea-consulta">    
+                    <div class="card-header bg-info text-white">
+                        Descripción del Problema de la Máquina
+                    </div>
+                    <div class="card-body">
+                        <p class="ConsultaPrompt">{{texto}}</p>
+                    </div>
+                    <div class="card-body">
+                        <textarea id="problema" class="form-control" rows="4"
+                            placeholder="Describe el problema de la máquina..."></textarea>
+                        <button id="consultarSolucion" class="btn btn-primary button-consulta"
+                            onclick="enviarTexto()">Solicitar Solución de Mantenimiento</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Maintenance History section -->
+        <!--<div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        Historial de Predicciones y Mantenimientos
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Máquina</th>
+                                    <th>Fecha Predicción</th>
+                                    <th>Probabilidad de Falla</th>
+                                    <th>Acción Recomendada</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#12</td>
+                                    <td>2024-09-10</td>
+                                    <td>85%</td>
+                                    <td>Revisión preventiva</td>
+                                    <td>Completado</td>
+                                </tr>
+                                <tr>
+                                    <td>#8</td>
+                                    <td>2024-09-12</td>
+                                    <td>90%</td>
+                                    <td>Revisión inmediata</td>
+                                    <td>Pendiente</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Sistema de Mantenimiento Predictivo Inteligente</p>
+    </footer>
+
+    <!-- Bootstrap JS y Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Simulación de gráfico en tiempo real
+        var ctx = document.getElementById('realtime-chart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['10:00', '11:00', '12:00', '13:00', '14:00'],
+                datasets: [{
+                    label: 'Rendimiento Máquina #12',
+                    borderColor: 'rgb(75, 192, 192)',
+                    data: [65, 59, 80, 81, 56],
+                }]
+            },
+            options: {}
+        });
+
+        // Funcionalidad del botón de consulta de estado
+        document.getElementById('consultarEstado').addEventListener('click', function () {
+            alert('Consultando el estado actual de las máquinas...');
+            // Aquí iría la lógica para hacer la consulta al servidor o API
+        });
+
+        // Funcionalidad del botón para solicitar una solución de mantenimiento
+        document.getElementById('consultarSolucion').addEventListener('click', function () {
+            var problema = document.getElementById('problema').value;
+            if (problema === '') {
+                alert('Por favor, describe el problema de la máquina antes de solicitar una solución.');
+            } else {
+                alert('Consultando solución de mantenimiento para el problema: ' + problema);
+                // Aquí iría la lógica para enviar el problema al servidor o IA y recibir una solución
+            }
+        });
+    </script>
+    <script>
+        function enviarTexto() {
+            var texto = document.getElementById('problema').value;
+
+            fetch('/enviar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ promtext: texto })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #eeeeee;
+        }
+
+        .card {
+            margin-top: 20px;
+        }
+
+        .alert {
+            margin-top: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .textarea-consulta {
+            margin-top: 20px;
+        }
+
+        .button-consulta {
+            margin-top: 10px;
+        }
+
+        .ConsultaPrompt {
+            color: #777;
+            padding: 10px;
+        }
+
+        .card {
+            border: 0;
+            box-shadow: #cfcfcf 0 0 2px 2px;
+            border-radius: 10px;
+        }
+
+        .card-header {
+            background-color: #cccccc;
+        }
+
+        .card-body {
+            color: #fff;
+        }
+
+        .footer {
+            color: #fff;
+        }
+
+        input[type=text] {
+            width: 100%;
+        }
+
+        .sensores {
+            margin-top: 30px;
+            background: #ffbb00;
+            box-shadow: #cfcfcf 0 0 2px 2px;
+            padding: 10px;
+            border-radius: 7px;
+        }
+    </style>
+</body>
+
+</html>
